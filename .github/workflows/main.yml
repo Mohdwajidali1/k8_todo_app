@@ -15,7 +15,7 @@ jobs:
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
-        working-directory: K8_TODOAPP/dev
+        working-directory: /dev
       
           
     
