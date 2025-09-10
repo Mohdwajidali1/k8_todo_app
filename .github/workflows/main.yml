@@ -7,15 +7,52 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0
+
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+        with:
+          client-id: # optional
+          tenant-id: # optional
+          subscription-id: # optional
+          
       - name: Install Terraform
         uses: little-core-labs/install-terraform@v2.0.0
         with:
          version: 1.8.2
+    
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
         working-directory: dev
+        
+      - name: Terraform Init
+        id: init
+        run: terraform init -check
+        working-directory: dev
+        
+      - name: terrform validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: terrform plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+        working-directory: dev
+
+jobs:
+  terraform init plan:
+  runs_on: self-hosted
+    steps:
+      - name: Terraform Init
+        id: init
+        run: terraform init -check
+        working-directory: dev
+
+        
+      
+        
       
           
     
