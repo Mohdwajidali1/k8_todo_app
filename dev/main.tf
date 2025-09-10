@@ -66,7 +66,7 @@ module "azurerm_kubernetes_cluster" {
 }
 
 module "azurerm_mssql_server" {
-  source             = "../module/azurerm_sql_server" 
+  source             = "../module/azurerm_sql_server"
   sql_server_name    = "todo_sql_server"
   rg_name            = "rg_dev_todoapp"
   location           = "centralindia"
@@ -80,12 +80,13 @@ module "azurerm_mssql_server" {
 }
 
 module "azurerm_mssql_database" {
+  depends_on = [ module.azurerm_mssql_server ]
   source          = "../module/azurerm_sql_database" # Sahi path
   db_name         = "todo_db"
   sql_server_name = "todo_sql_server"
   rg_name         = "rg_dev_todoapp"
   location        = "centralindia"
-    server_id       = module.azurerm_mssql_server.azurerm_mssql_server.sql_block.id 
+  server_id       = module.azurerm_mssql_server.server_id
 
   tags = {
     "Manageby"    = "Terraform"
